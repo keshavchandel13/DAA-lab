@@ -10,9 +10,7 @@ int main(){
         int min = arr[i];
         for(int j=i+1;j<5;j++){
             if(min>arr[j]){
-                int temp = arr[j];
-                arr[j] = min;
-                min = temp;
+                swap(min,arr[j]);
             }
         }
         arr[i] = min; 
