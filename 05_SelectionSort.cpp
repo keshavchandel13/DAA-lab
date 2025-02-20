@@ -1,6 +1,7 @@
 #include<iostream>
 using namespace std;
 int main() {
+    //  Given array
     int arr[] = {64, 25, 11, 22, 12};
     cout << "Unsorted array\n";
     for(int i = 0; i < 5; i++) {
