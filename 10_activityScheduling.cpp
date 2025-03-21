@@ -1,5 +1,5 @@
 #include <iostream>
-#include <algorithm> // Required for sort
+#include <algorithm> 
 using namespace std;
 
 struct activity {
