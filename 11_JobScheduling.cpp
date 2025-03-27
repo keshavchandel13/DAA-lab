@@ -18,6 +18,7 @@ void jobScheduling(Job arr[], int n){
     for(int i = 1;i<n;i++){
         maxi = max(maxi, arr[i].dead);
     }
+    
     // Declare the space to store  the 
     int slot[maxi+1];
     // Initilize the slot array with -1
@@ -45,12 +46,12 @@ void jobScheduling(Job arr[], int n){
 int main(){
     int n = 6;
     Job arr[n] = {
-        {1,4,25},
-        {2,2,24},
-        {3,4,15},
+        {1,4,25}, 
+        {2,2,24}, 
+        {3,4,15}, 
         {4,2,10},
-        {5,2,20},
-        {6,4,12},
+        {5,2,20}, 
+        {6,4,12}, 
     };
     jobScheduling(arr,n);
 return 0;
