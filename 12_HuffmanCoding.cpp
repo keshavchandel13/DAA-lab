@@ -2,85 +2,77 @@
 #include<queue>
 #include<unordered_map>
 using namespace std;
-
-struct Node {
+struct Node{
     char ch;
     int freq;
-    Node* left;
-    Node* right;
-    Node(char ch, int freq) {
+    Node *left,*right;
+    Node(char ch, int freq,Node *left=nullptr, Node *right=nullptr){
         this->ch = ch;
         this->freq = freq;
-        left = right = nullptr;
+        this->left = left;
+        this->right = right;
     }
 };
-
-struct compare {
-    bool operator()(Node* a, Node* b) {
-        return a->freq > b->freq; // Compare frequencies
+struct compare{
+    bool operator()(Node *a, Node *b){
+        return a->freq > b->freq;
     }
 };
-
-Node* huffman_tree(unordered_map<char, int>& freqmap) {
-    priority_queue<Node*, vector<Node*>, compare> minheap;
-
-    for (auto pair : freqmap) {
-        minheap.push(new Node(pair.first, pair.second)); // Push nodes into min-heap
+Node* buildHuffmanTree(unordered_map<char,int>&freqMap){
+    priority_queue<Node*,vector<Node*>,compare> minHeap; // Create a priority queue 
+    // insert elements in priority queue
+    for(auto ch:freqMap){
+        minHeap.push(new Node(ch.first,ch.second));
     }
-
-    while (minheap.size() > 1) {
-        Node* left = minheap.top(); minheap.pop();
-        Node* right = minheap.top(); minheap.pop();
-        Node* merged = new Node('\0', left->freq + right->freq);
-        merged->left = left;
-        merged->right = right;
-        minheap.push(merged);
+    // Build huffman tree
+    while(minHeap.size()>1){
+        Node *left = minHeap.top(); minHeap.pop(); 
+        Node *right = minHeap.top(); minHeap.pop(); 
+        Node * parent = new Node('\0',left->freq+right->freq,left,right);
+        minHeap.push(parent);
     }
-
-    return minheap.top(); // Return the root of the Huffman Tree
+    return minHeap.top();
 }
-
-void generateCodes(Node* root, string code, unordered_map<char, string>& huffCodes) {
-    if (!root) return;
-
-    // If leaf node, store the character with its corresponding code
-    if (root->ch != '\0') {
-        huffCodes[root->ch] = code;
+void generateCodes(Node *root, string code, unordered_map<char,string>&huffmanCode){
+    if(!root) return;
+    if(!root->left && !root->right){
+        huffmanCode[root->ch] =code;
     }
-
-    // Recur for left and right subtrees
-    generateCodes(root->left, code + "0", huffCodes);
-    generateCodes(root->right, code + "1", huffCodes);
+    generateCodes(root->left,code+"0",huffmanCode);
+    generateCodes(root->right,code+"1",huffmanCode);
 }
-
-int main() {
-    string s = "aaabbcc";  // Input string
-
-    // Frequency map to track repetition of characters
-    unordered_map<char, int> freqmap;
-    for (auto ch : s) {
-        freqmap[ch]++;
-    }
-
-    // Create Huffman's tree
-    Node* root = huffman_tree(freqmap);
-
-    unordered_map<char, string> huffCodes;
-    generateCodes(root, "", huffCodes); // Generate Huffman codes for each character
-
-    // Display Huffman Codes
-    cout << "Huffman Codes:\n";
-    for (auto pair : huffCodes) {
-        cout << pair.first << " : " << pair.second << "\n";
-    }
-
-    // Encode the original text
+string encodedText(string text, unordered_map<char,string>huffmanCode){
     string encoded = "";
-    for (char ch : s) {
-        encoded += huffCodes[ch]; // Get the Huffman code for each character
+    for(char ch :  text){
+        encoded+=huffmanCode[ch];
+    }
+    return encoded;
+}
+void freeTree(Node* root) {
+    if (!root) return;
+    freeTree(root->left);
+    freeTree(root->right);
+    delete root;
+}
+int main(){
+    string text = "ABBCCCDDDDEEEEE";
+    unordered_map<char,int>  freqMap;
+    for(char ch:text){
+        freqMap[ch]++;
+    }
+    Node *root = buildHuffmanTree(freqMap);
+
+    unordered_map<char,string> huffmanCode;
+    generateCodes(root,"",huffmanCode);
+    // Display
+    for(auto pair:huffmanCode){
+        cout<<pair.first<<" : "<<pair.second<<endl;
     }
 
-    cout << "Encoded text: " << encoded << endl;
+    // Encode the text
+    string encoded = encodedText(text,huffmanCode);
+    cout<<encoded<<endl;
+    freeTree(root);
 
     return 0;
 }
