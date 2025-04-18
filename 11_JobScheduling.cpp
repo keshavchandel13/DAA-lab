@@ -37,9 +37,6 @@ void jobScheduling(Job arr[], int n){
     }
     cout<<"The max Profit is: "<<profit<<endl;
     cout<<"The max Jobs can be done: "<<countJobs<<endl;
-
-
-
 }
 
 
