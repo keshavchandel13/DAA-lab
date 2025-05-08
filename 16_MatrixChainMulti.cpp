@@ -17,10 +17,8 @@ int f(vector<int>& arr, int i, int j, vector<vector<int>>& dp){
         
         int ans = f(arr,i,k,dp) + f(arr, k+1,j,dp) + arr[i-1]*arr[k]*arr[j];
         
-        mini = min(mini,ans);
-        
+        mini = min(mini,ans);  
     }
-    
     return mini;
 }
 
