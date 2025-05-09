@@ -24,24 +24,16 @@ int f(vector<int>& arr, int i, int j, vector<vector<int>>& dp){
 
 
 int matrixMultiplication(vector<int>& arr, int N){
-    
     vector<vector<int>> dp(N,vector<int>(N,-1));
-    
     int i =1;
     int j = N-1;
-    
-    
     return f(arr,i,j,dp);
-    
-    
 }
 
 int main() {
 	
 	vector<int> arr = {10, 20, 30, 40, 50};
-	
 	int n = arr.size();
-	
 	cout<<"The minimum number of operations is "<<matrixMultiplication(arr,n);
 	
 	return 0;
