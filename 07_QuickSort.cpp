@@ -30,7 +30,5 @@ int main(){
     int arr[] = {2,7,12,6,9,10};
     quickSort(arr,0,5);
     printSortedArray(arr);
-
-
-return 0;
+    return 0;
 }
